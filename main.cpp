@@ -4,35 +4,38 @@
 #include <sstream>
 #include <algorithm>
 #include <cstring>
+#include <stack>
 
 using namespace std;
 
 //compilation: g++ -std=c++11 -O3 -Wall main.cpp -lm
-/*1 2
-  5 7
-  1 0
-  1 4
-  1 3
-  1 2
-  0 4
-  4 3
-  3 2*/
 
-void dfs(int vertex, int size, int** m, bool visited[]){
+stack<int> dfs(int vertex, int size, int** m, bool visited[], stack<int> stack){
     visited[vertex-1] = true;
     cout << vertex << " ";
     for(int i = 0; i < size; i++){
         if(m[vertex-1][i] == 1 && !visited[i]){
-            dfs(i+1, size, m, visited);
+            cout << "dfs " << i + 1 << endl;
+            stack = dfs(i+1, size, m, visited, stack);
+            stack.push(vertex);
+        }
+    }
+    return stack;
+}
+
+void dfs_transpose(int vertex, int size, int** m, bool visited[]){
+    visited[vertex-1] = true;
+    cout << vertex << " ";
+    for(int i = 0; i < size; i++){
+        if(m[i][vertex-1] == 1 && !visited[i]){
+            dfs_transpose(i+1, size, m, visited);
         }
     }
 }
 
-
-
-
 int main(){
     int v1,v2, vertices, archs, b1, b2;
+    stack<int> stack;
 
 
     if (scanf("%d %d", &v1,&v2) == 0){
@@ -60,7 +63,21 @@ int main(){
         m[b1-1][b2-1] = 1;
     }
 
-    dfs(5, vertices, m, visited);
+    stack = dfs(1, vertices, m, visited, stack);
+    memset(visited, 0, sizeof(bool)*vertices);
+    int numComponents = 0;
+
+    while (!stack.empty()){
+        int vertex2 = stack.top();
+        stack.pop();
+        if (!visited[vertex2-1]){
+            printf("Component %d: ", numComponents);
+            cout << endl << "vertex2 " << vertex2 << endl;
+            dfs_transpose(vertex2, vertices, m, visited);
+            numComponents++;
+            printf("\n");
+        }
+    }
 
     cout << endl;
 
