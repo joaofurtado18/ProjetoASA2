@@ -19,7 +19,7 @@ using namespace std;
   3 2*/
 
 void dfs(int vertex, int size, int** m, bool* visited){
-    visited[vertex-1] = true;
+    visited[vertex] = true;
     cout << vertex << " ";
     for(int i = 0; i < size; i++){
         if(m[vertex][i] == 1 && !visited[i]){
@@ -60,9 +60,9 @@ int main(){
         m[b1][b2] = 1;
     }
 
-    dfs(m[0][0], vertices, m, visited);
+    dfs(1, vertices, m, visited);
 
-
+    cout << endl;
 
 
 }
