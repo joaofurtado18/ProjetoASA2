@@ -11,6 +11,11 @@ using namespace std;
 
 int main(){
     int v1,v2, vertices, archs, b1, b2;
+    int** m = new int*[vertices];
+    for (int i = 0; i < vertices; i++){
+        m[i] = new int[vertices];
+    }
+
     vector<int> v;
     if (scanf("%d %d", &v1,&v2) == 0){
         cout << "0";
@@ -20,13 +25,15 @@ int main(){
         cout << "0";
         return 0;
     }
+    for int (i = 0; i < vertices; i++){
+        memset(m[i], 0, vertices);
+    }
     for (int i = 0; i < archs; i++){
         if (scanf("%d %d", &b1, &b2) == 0){
             cout << "0";
             return 0;
         }
-        v.push_back(b1);
-        v.push_back(b2);
+        m[b1-1][b2-1] = 1;
     }
     cout << endl;
     cout << v1 << endl << v2 << endl << vertices << endl << archs << endl << endl;
