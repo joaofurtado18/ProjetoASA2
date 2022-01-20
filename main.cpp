@@ -9,10 +9,23 @@ using namespace std;
 
 //compilation: g++ -std=c++11 -O3 -Wall main.cpp -lm
 
+void dfs(int vertex, int size, int** m, bool* visited){
+    visited[vertex-1] = true;
+    cout << vertex << " ";
+    for(int i = 0; i < size; i++){
+        if(m[vertex][i] == 1 && !visited[i]){
+            dfs(i, size, m, visited);
+        }
+    }
+}
+
+
+
+
 int main(){
     int v1,v2, vertices, archs, b1, b2;
 
-    vector<int> v;
+
     if (scanf("%d %d", &v1,&v2) == 0){
         cout << "0";
         return 0;
@@ -21,12 +34,14 @@ int main(){
         cout << "0";
         return 0;
     }
+    bool visited[vertices];
     int** m = new int*[vertices];
-
     for (int i = 0; i < vertices; i++){
         m[i] = new int[vertices];
-        memset(m[i], 0, vertices);
+        memset(m[i], 0, sizeof(int)*vertices);
     }
+    memset(visited, 0, sizeof(bool)*vertices);
+
 
     for (int i = 0; i < archs; i++){
         if (scanf("%d %d", &b1, &b2) == 0){
@@ -35,9 +50,10 @@ int main(){
         }
         m[b1-1][b2-1] = 1;
     }
-    cout << endl;
-    cout << v1 << endl << v2 << endl << vertices << endl << archs << endl << endl;
-    for (int i = 0; i < 2*archs; i++){
-        cout << v[i] << endl;
-    }
+
+    dfs(m[0][0], vertices, m, visited);
+
+
+
+
 }
