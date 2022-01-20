@@ -18,12 +18,12 @@ using namespace std;
   4 3
   3 2*/
 
-void dfs(int vertex, int size, int** m, bool* visited){
-    visited[vertex] = true;
+void dfs(int vertex, int size, int** m, bool visited[]){
+    visited[vertex-1] = true;
     cout << vertex << " ";
     for(int i = 0; i < size; i++){
-        if(m[vertex][i] == 1 && !visited[i]){
-            dfs(i, size, m, visited);
+        if(m[vertex-1][i] == 1 && !visited[i]){
+            dfs(i+1, size, m, visited);
         }
     }
 }
@@ -57,10 +57,10 @@ int main(){
             cout << "0";
             return 0;
         }
-        m[b1][b2] = 1;
+        m[b1-1][b2-1] = 1;
     }
 
-    dfs(1, vertices, m, visited);
+    dfs(5, vertices, m, visited);
 
     cout << endl;
 
