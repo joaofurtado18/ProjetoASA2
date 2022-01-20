@@ -8,6 +8,15 @@
 using namespace std;
 
 //compilation: g++ -std=c++11 -O3 -Wall main.cpp -lm
+/*1 2
+  5 7
+  1 0
+  1 4
+  1 3
+  1 2
+  0 4
+  4 3
+  3 2*/
 
 void dfs(int vertex, int size, int** m, bool* visited){
     visited[vertex-1] = true;
@@ -48,7 +57,7 @@ int main(){
             cout << "0";
             return 0;
         }
-        m[b1-1][b2-1] = 1;
+        m[b1][b2] = 1;
     }
 
     dfs(m[0][0], vertices, m, visited);
