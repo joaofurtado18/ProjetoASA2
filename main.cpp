@@ -28,7 +28,7 @@ void dfs(int vertex, int size, int** m, bool visited[], stack<int> stack){
 
 void dfs_transpose(int vertex, int size, int** m, bool visited[]){
     visited[vertex-1] = true;
-    cout << "transpose "<<vertex << " ";
+    cout << vertex << " ";
     for(int i = 0; i < size; i++){
         if(m[i][vertex-1] == 1 && !visited[i]){
             dfs_transpose(i+1, size, m, visited);
@@ -67,14 +67,13 @@ int main(){
     }
 
     dfs(1, vertices, m, visited, stack);
-    s.push(1);
     cout << endl;
     memset(visited, 0, sizeof(bool)*vertices);
     int numComponents = 0;
 
     while (!s.empty()){
         int vertex2 = s.top();
-        cout << "stack" << vertex2 << endl;
+        cout << "stack: " << vertex2 << endl;
         s.pop();
         if (!visited[vertex2-1]){
             printf("Component %d: ", numComponents);
@@ -86,5 +85,19 @@ int main(){
 
     cout << endl;
 
+    for (int i = 0; i < vertices; i++){
+        for (int j = 0; j < vertices; j++){
+            cout << m[i][j] << ' ';
+        }
+        cout << endl;
+    }
 
+    cout << endl << endl;
+
+    for (int i = 0; i < vertices; i++){
+        for (int j = 0; j < vertices; j++){
+            cout << m[j][i] << ' ';
+        }
+        cout << endl;
+    }
 }
