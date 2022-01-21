@@ -55,9 +55,10 @@ int main(){
         }
         m[b1-1][b2-1] = 1;
     }
-
+    cout << "dfs 1 ";
     dfs_transpose(v1, vertices, m, visited);
     cout << endl;
+    cout << "dfs 2 ";
     memset(visited, 0, sizeof(bool)*vertices);
     dfs_transpose(v2, vertices, m, visited);
     cout << endl;
@@ -67,7 +68,6 @@ int main(){
             cout << "result " << i+1 << endl;
         }
     }
-
     cout << endl;
 
 }
