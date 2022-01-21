@@ -12,22 +12,11 @@ using namespace std;
 // teste1 = 2 4
 // teste2 = 2 
 // teste3 = -
-stack<int> s;
-
-void dfs(int vertex, int size, int** m, bool visited[], stack<int> stack){
-    visited[vertex-1] = true;
-    cout << vertex << " ";
-    for(int i = 0; i < size; i++){
-        if(m[vertex-1][i] == 1 && !visited[i]){
-            dfs(i+1, size, m, visited, stack);
-        }
-    }
-    s.push(vertex);
-    //return stack;
-}
+int* count_vec;
 
 void dfs_transpose(int vertex, int size, int** m, bool visited[]){
     visited[vertex-1] = true;
+    count_vec[vertex-1] += 1;
     cout << vertex << " ";
     for(int i = 0; i < size; i++){
         if(m[i][vertex-1] == 1 && !visited[i]){
@@ -56,7 +45,8 @@ int main(){
         memset(m[i], 0, sizeof(int)*vertices);
     }
     memset(visited, 0, sizeof(bool)*vertices);
-
+    count_vec = new int[vertices];
+    memset(count_vec, 0, sizeof(int)*vertices);
 
     for (int i = 0; i < archs; i++){
         if (scanf("%d %d", &b1, &b2) == 0){
@@ -66,38 +56,18 @@ int main(){
         m[b1-1][b2-1] = 1;
     }
 
-    dfs(1, vertices, m, visited, stack);
+    dfs_transpose(v1, vertices, m, visited);
     cout << endl;
     memset(visited, 0, sizeof(bool)*vertices);
-    int numComponents = 0;
-
-    while (!s.empty()){
-        int vertex2 = s.top();
-        cout << "stack: " << vertex2 << endl;
-        s.pop();
-        if (!visited[vertex2-1]){
-            printf("Component %d: ", numComponents);
-            dfs_transpose(vertex2, vertices, m, visited);
-            numComponents++;
-            printf("\n");
+    dfs_transpose(v2, vertices, m, visited);
+    cout << endl;
+    cout << endl;
+    for (int i = 0; i < vertices; i++){
+        if (count_vec[i] > 1){
+            cout << "result " << i+1 << endl;
         }
     }
 
     cout << endl;
 
-    for (int i = 0; i < vertices; i++){
-        for (int j = 0; j < vertices; j++){
-            cout << m[i][j] << ' ';
-        }
-        cout << endl;
-    }
-
-    cout << endl << endl;
-
-    for (int i = 0; i < vertices; i++){
-        for (int j = 0; j < vertices; j++){
-            cout << m[j][i] << ' ';
-        }
-        cout << endl;
-    }
 }
