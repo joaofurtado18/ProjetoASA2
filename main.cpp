@@ -12,12 +12,13 @@ using namespace std;
 // teste1 = 2 4
 // teste2 = 2 
 // teste3 = -
+
 int* count_vec;
 
 void dfs_transpose(int vertex, int size, int** m, bool visited[]){
     visited[vertex-1] = true;
     count_vec[vertex-1] += 1;
-    cout << vertex << " ";
+    // cout << vertex << " ";
     for(int i = 0; i < size; i++){
         if(m[i][vertex-1] == 1 && !visited[i]){
             dfs_transpose(i+1, size, m, visited);
@@ -28,6 +29,7 @@ void dfs_transpose(int vertex, int size, int** m, bool visited[]){
 int main(){
     int v1,v2, vertices, archs, b1, b2;
     stack<int> stack;
+    vector<int> vec;
 
 
     if (scanf("%d %d", &v1,&v2) == 0){
@@ -55,19 +57,34 @@ int main(){
         }
         m[b1-1][b2-1] = 1;
     }
-    cout << "dfs 1 ";
+    // cout << "dfs 1 ";
     dfs_transpose(v1, vertices, m, visited);
-    cout << endl;
-    cout << "dfs 2 ";
+    // cout << "dfs 2 ";
     memset(visited, 0, sizeof(bool)*vertices);
     dfs_transpose(v2, vertices, m, visited);
-    cout << endl;
-    cout << endl;
     for (int i = 0; i < vertices; i++){
         if (count_vec[i] > 1){
-            cout << "result " << i+1 << endl;
+            vec.push_back(i);
         }
     }
-    cout << endl;
+    const int size = vec.size();
+    if (size == 0)
+        cout << "-";
+    for (int i = 0; i < size; i++){
+        int sum = 0;
+        for(int j = 0; j < size; j++){
+            if (m[vec[i]][vec[j]] == 1){
+                sum += 1;
+                break;
+            }
+        }
+        if (sum == 0){
+            if(i == size-1)
+                cout << vec[i]+1;
+            else
+                cout << vec[i]+1 << " ";
+        }
+        sum = 0;
+    }
 
 }
