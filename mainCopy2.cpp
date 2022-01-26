@@ -17,26 +17,32 @@ int *count_vec;
 bool *visited;
 int v1, v2, vertices, archs, b1, b2;
 vector<int> vec;
-map<int, vector<int>> graph;
+
+struct Vertex
+{
+    vector<int> adj;
+};
+
+vector<Vertex> graph;
 
 void dfs(int vertex)
 {
     visited[vertex - 1] = true;
     count_vec[vertex - 1] += 1;
-    int size = graph[vertex].size();
+    int size = graph[vertex].adj.size();
     for (int i = 0; i < size; i++)
-        if (!visited[graph[vertex][i] - 1])
-            dfs(graph[vertex][i]);
+        if (!visited[graph[vertex].adj[i] - 1])
+            dfs(graph[vertex].adj[i]);
 }
 
 bool is_cyclic_aux(int u)
 {
     count_vec[u] = 1;
 
-    int size = graph[u].size();
+    int size = graph[u].adj.size();
     for (int i = 0; i < size; i++)
     {
-        int v = graph[u][i];
+        int v = graph[u].adj[i];
 
         if (count_vec[v] == 1)
             return true;
@@ -61,11 +67,10 @@ bool is_cyclic()
 
 // v1 -> v2
 // v1 = origin, v2 = destination
-map<int, vector<int>> addEdge(int v1, int v2, map<int, vector<int>> graph)
+void addEdge(int v1, int v2)
 {
-    graph[v1].push_back(v2);
-    graph[v2];
-    return graph;
+    cout << "jsjs" << endl;
+    graph[v1].adj.push_back(v2);
 }
 
 /*
@@ -100,6 +105,7 @@ map<int, vector<int>> transpose_graph(map<int, vector<int>> graph, map<int, vect
 }
 */
 
+/*
 void results()
 {
     map<int, vector<int>> transpose;
@@ -126,6 +132,7 @@ void results()
             cout << it->first << " ";
     }
 }
+*/
 
 int main()
 {
@@ -139,8 +146,9 @@ int main()
     // graph input
     while (cin >> b1 >> b2)
     {
-        graph = addEdge(b2, b1, graph);
+        addEdge(b2, b1);
     }
+    cout << "aqui" << endl;
 
     count_vec = new int[vertices];
     memset(count_vec, 0, sizeof(int) * vertices);
@@ -176,7 +184,7 @@ int main()
         return 0;
     }
 
-    results();
+    //results();
     cout << endl;
     return 0;
 }
