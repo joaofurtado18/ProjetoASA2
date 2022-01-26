@@ -43,7 +43,7 @@ bool is_cyclic_aux(int u, int *count_vec, int vertices)
     int size_adj = graph[u].adj.size();
     for (int i = 0; i < size_adj; i++)
     {
-        int v = graph[u].adj[i];
+        int v = graph[u].adj[i]-1;
 
         if (count_vec[v] == 1)
             return true;
@@ -142,11 +142,11 @@ int main()
     count_vec = new int[vertices];
     memset(count_vec, 0, sizeof(int) * vertices);
 
-    // if (is_cyclic(count_vec, vertices))
-    // {
-    //     cout << "0" << endl;
-    //     return 0;
-    // }
+    if (is_cyclic(count_vec, vertices))
+    {
+        cout << "0" << endl;
+        return 0;
+    }
 
     memset(count_vec, 0, sizeof(int) * vertices);
 
