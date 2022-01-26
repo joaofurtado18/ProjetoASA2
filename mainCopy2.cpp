@@ -8,7 +8,6 @@
 
 using namespace std;
 
-
 //compilation: g++ -std=c++11 -O3 -Wall main.cpp -lm
 // teste1 = 2 4
 // teste2 = 2
@@ -16,18 +15,21 @@ using namespace std;
 
 int *count_vec;
 bool *visited;
+int v1, v2, vertices, archs, b1, b2;
+vector<int> vec;
+map<int, vector<int>> graph;
 
-void dfs(int vertex, map<int, vector<int>> graph)
+void dfs(int vertex)
 {
     visited[vertex - 1] = true;
     count_vec[vertex - 1] += 1;
     int size = graph[vertex].size();
     for (int i = 0; i < size; i++)
         if (!visited[graph[vertex][i] - 1])
-            dfs(graph[vertex][i], graph);
+            dfs(graph[vertex][i]);
 }
 
-bool is_cyclic_aux(int u, int *count_vec, int vertices, map<int, vector<int>> graph)
+bool is_cyclic_aux(int u)
 {
     count_vec[u] = 1;
 
@@ -39,7 +41,7 @@ bool is_cyclic_aux(int u, int *count_vec, int vertices, map<int, vector<int>> gr
         if (count_vec[v] == 1)
             return true;
 
-        if (count_vec[v] == 0 && is_cyclic_aux(v, count_vec, vertices, graph))
+        if (count_vec[v] == 0 && is_cyclic_aux(v))
             return true;
     }
 
@@ -47,11 +49,11 @@ bool is_cyclic_aux(int u, int *count_vec, int vertices, map<int, vector<int>> gr
     return false;
 }
 
-bool is_cyclic(int *count_vec, int vertices, map<int, vector<int>> graph)
+bool is_cyclic()
 {
     for (int i = 0; i < vertices; i++)
         if (count_vec[i] == 0)
-            if (is_cyclic_aux(i, count_vec, vertices, graph))
+            if (is_cyclic_aux(i))
                 return true;
 
     return false;
@@ -66,6 +68,7 @@ map<int, vector<int>> addEdge(int v1, int v2, map<int, vector<int>> graph)
     return graph;
 }
 
+/*
 void printGraph(map<int, vector<int>> graph)
 {
     map<int, vector<int>>::iterator it;
@@ -81,75 +84,68 @@ void printGraph(map<int, vector<int>> graph)
     cout << endl;
 }
 
-map<int, vector<int>> transpose_graph(map<int, vector<int>> graph, map<int, vector<int>> transpose){
+map<int, vector<int>> transpose_graph(map<int, vector<int>> graph, map<int, vector<int>> transpose)
+{
     map<int, vector<int>>::iterator it;
 
-    for (it = graph.begin(); it != graph.end(); it++){
+    for (it = graph.begin(); it != graph.end(); it++)
+    {
         int size = it->second.size();
-        for (int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++)
+        {
             transpose = addEdge(it->second[i], it->first, transpose);
         }
     }
     return transpose;
 }
+*/
 
-void results(map<int, vector<int>> graph, vector<int> vec){
+void results()
+{
     map<int, vector<int>> transpose;
     map<int, vector<int>>::iterator it;
-    for (it = graph.begin(); it != graph.end(); it++){
+    for (it = graph.begin(); it != graph.end(); it++)
+    {
         int size = it->second.size();
-        if (size == 0 && count_vec[it->first-1] > 1){
+        if (size == 0 && count_vec[it->first - 1] > 1)
+        {
             transpose[it->first];
         }
-        for (int i = 0; i < size; i++){
-            if (count_vec[it->first-1] > 1 && count_vec[it->second[i]-1]>1){
+        for (int i = 0; i < size; i++)
+        {
+            if (count_vec[it->first - 1] > 1 && count_vec[it->second[i] - 1] > 1)
+            {
                 transpose = addEdge(it->second[i], it->first, transpose);
-                transpose[vec[i]+1];
+                transpose[vec[i] + 1];
             }
         }
     }
-    for (it = transpose.begin(); it != transpose.end(); it++){
+    for (it = transpose.begin(); it != transpose.end(); it++)
+    {
         if (it->second.empty())
             cout << it->first << " ";
     }
 }
 
-
 int main()
 {
-    int v1, v2, vertices, archs, b1, b2;
-    vector<int> vec;
-    map<int, vector<int>> graph;
+    ios_base::sync_with_stdio(false);
 
-    if (scanf("%d %d ", &v1, &v2) == 0)
-    {
-        cout << "0" << endl;
-        return 0;
-    }
-
-    if (scanf("%d %d ", &vertices, &archs) == 0)
-    {
-        cout << "0" << endl;
-        return 0;
-    }
+    cin >> v1 >> v2;
+    cin >> vertices >> archs;
 
     visited = new bool[vertices];
     memset(visited, 0, sizeof(bool) * vertices);
     // graph input
-    for (int i = 0; i < archs; i++)
+    while (cin >> b1 >> b2)
     {
-        if (scanf("%d %d ", &b1, &b2) == 0)
-        {
-            cout << "0" << endl;
-            return 0;
-        }
         graph = addEdge(b2, b1, graph);
     }
 
     count_vec = new int[vertices];
     memset(count_vec, 0, sizeof(int) * vertices);
 
-    if (is_cyclic(count_vec, vertices, graph))
+    if (is_cyclic())
     {
         cout << "0" << endl;
         return 0;
@@ -158,10 +154,10 @@ int main()
     memset(count_vec, 0, sizeof(int) * vertices);
 
     //reseting visited
-    dfs(v1, graph);
+    dfs(v1);
     memset(visited, 0, sizeof(bool) * vertices);
 
-    dfs(v2, graph);
+    dfs(v2);
     memset(visited, 0, sizeof(bool) * vertices);
 
     delete visited;
@@ -180,7 +176,7 @@ int main()
         return 0;
     }
 
-    results(graph, vec);
+    results();
     cout << endl;
     return 0;
 }
