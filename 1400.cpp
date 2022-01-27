@@ -8,13 +8,13 @@
 
 using namespace std;
 
-
 //compilation: g++ -std=c++11 -O3 -Wall main.cpp -lm
 // teste1 = 2 4
 // teste2 = 2
 // teste3 = -
 
-typedef struct node_s{
+typedef struct node_s
+{
     int id;
     vector<int> adj;
 } node;
@@ -29,53 +29,51 @@ void dfs(int vertex)
 {
     visited[vertex - 1] = true;
     count_vec[vertex - 1] += 1;
-    // cout << vertex << " ";
-    int size = graph[vertex-1].adj.size();
+    int size = graph[vertex - 1].adj.size();
     for (int i = 0; i < size; i++)
-        if (!visited[graph[vertex-1].adj[i] - 1])
-            dfs(graph[vertex-1].adj[i]);
+        if (!visited[graph[vertex - 1].adj[i] - 1])
+            dfs(graph[vertex - 1].adj[i]);
 }
 
-bool is_cyclic_aux(int u, int *count_vec, int vertices)
+bool is_cyclic_aux(int vertex, int vertices)
 {
-    count_vec[u] = 1;
+    count_vec[vertex] = 1;
 
-    int size_adj = graph[u].adj.size();
+    int size_adj = graph[vertex].adj.size();
     for (int i = 0; i < size_adj; i++)
     {
-        int v = graph[u].adj[i]-1;
+        int v = graph[vertex].adj[i] - 1;
 
         if (count_vec[v] == 1)
             return true;
 
-        if (count_vec[v] == 0 && is_cyclic_aux(v, count_vec, vertices))
+        if (count_vec[v] == 0 && is_cyclic_aux(v, vertices))
             return true;
     }
 
-    count_vec[u] = 2;
+    count_vec[vertex] = 2;
     return false;
 }
 
-bool is_cyclic(int *count_vec, int vertices)
+bool is_cyclic(int vertices)
 {
     for (int i = 0; i < vertices; i++)
         if (count_vec[i] == 0)
-            if (is_cyclic_aux(i, count_vec, vertices))
+            if (is_cyclic_aux(i, vertices))
                 return true;
 
     return false;
 }
 
-// v1 -> v2
-// v1 = origin, v2 = destination
-void addEdge(int v1, int v2, node** graph_add)
+void addEdge(int v1, int v2, node **graph_add)
 {
-    (*graph_add)[v1-1].adj.push_back(v2);
-    (*graph_add)[v1-1].id = v1;
-    (*graph_add)[v2-1].id = v2;
+    (*graph_add)[v1 - 1].adj.push_back(v2);
+    (*graph_add)[v1 - 1].id = v1;
+    (*graph_add)[v2 - 1].id = v2;
 }
 
-void printGraph(node* graph_print, int vertices){
+void printGraph(node *graph_print, int vertices)
+{
     for (int i = 0; i < vertices; i++)
     {
 
@@ -87,14 +85,18 @@ void printGraph(node* graph_print, int vertices){
     cout << endl;
 }
 
-void results(vector<int> vec, int vertices, int size){
-    for (int i = 0; i < vertices; i++){
+void results(vector<int> vec, int vertices, int size)
+{
+    for (int i = 0; i < vertices; i++)
+    {
         int size2 = graph[i].adj.size();
-        if (size2 == 0 && count_vec[i] > 1){
+        if (size2 == 0 && count_vec[i] > 1)
             transpose[graph[i].id];
-        }
-        for (int j = 0; j < size2; j++){
-            if (count_vec[i] > 1 && count_vec[graph[i].adj[j]-1]>1){
+
+        for (int j = 0; j < size2; j++)
+        {
+            if (count_vec[i] > 1 && count_vec[graph[i].adj[j] - 1] > 1)
+            {
                 transpose[graph[i].adj[j]].push_back(graph[i].id);
                 transpose[graph[i].id];
             }
@@ -102,7 +104,8 @@ void results(vector<int> vec, int vertices, int size){
     }
     // printGraph(res_graph, size);
     map<int, vector<int>>::iterator it;
-    for (it = transpose.begin(); it != transpose.end(); it++){
+    for (it = transpose.begin(); it != transpose.end(); it++)
+    {
         if (it->second.empty())
             cout << it->first << " ";
     }
@@ -142,7 +145,7 @@ int main()
     count_vec = new int[vertices];
     memset(count_vec, 0, sizeof(int) * vertices);
 
-    if (is_cyclic(count_vec, vertices))
+    if (is_cyclic(vertices))
     {
         cout << "0" << endl;
         return 0;
@@ -150,43 +153,29 @@ int main()
 
     memset(count_vec, 0, sizeof(int) * vertices);
 
-    //reseting visited
-    // cout << "dfs1 ";
     dfs(v1);
-    // cout << endl;
     memset(visited, 0, sizeof(bool) * vertices);
-    // cout << "dfs2 ";
+
     dfs(v2);
-    // cout << endl;
     memset(visited, 0, sizeof(bool) * vertices);
 
-    // delete visited;
-
-    // cout << "count_vec ";
     for (int i = 0; i < vertices; i++)
     {
-        // cout << count_vec[i] << " " << endl << "i: " << i << endl;
-        if (count_vec[i] > 1){
+        if (count_vec[i] > 1)
+        {
             vec.push_back(i);
         }
     }
-    // cout << endl;
-    // for (int i = 0; i < (int) vec.size(); i++){
-    // cout << "pushback: " << vec[i] << endl;
-        
-    // }
 
     const int size = vec.size();
-    if (size == 0){
+    if (size == 0)
+    {
         cout << "-" << endl;
         return 0;
     }
     res_graph = new node[size];
-    // printGraph(res_graph, size);
 
-    // printGraph(graph, vertices);
     results(vec, vertices, size);
-    // printGraph2(transpose);
     cout << endl;
     return 0;
 }
