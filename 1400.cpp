@@ -106,8 +106,8 @@ void results(vector<int> vec, int vertices, int size)
     map<int, vector<int>>::iterator it;
     for (it = transpose.begin(); it != transpose.end(); it++)
     {
-        if (it->second.empty())
-            cout << it->first << " ";
+        //if (it->second.empty())
+          //  cout << it->first << " ";
     }
 }
 
@@ -118,15 +118,16 @@ int main()
 
     if (scanf("%d %d ", &v1, &v2) == 0)
     {
-        cout << "0" << endl;
+        //cout << "0" << endl;
         return 0;
     }
 
     if (scanf("%d %d ", &vertices, &archs) == 0)
     {
-        cout << "0" << endl;
+        //cout << "0" << endl;
         return 0;
     }
+    cout << vertices + archs;
 
     visited = new bool[vertices];
     graph = new node[vertices];
@@ -136,7 +137,7 @@ int main()
     {
         if (scanf("%d %d ", &b1, &b2) == 0)
         {
-            cout << "0" << endl;
+            //cout << "0" << endl;
             return 0;
         }
         addEdge(b2, b1, &graph);
@@ -147,7 +148,7 @@ int main()
 
     if (is_cyclic(vertices))
     {
-        cout << "0" << endl;
+        //cout << "0" << endl;
         return 0;
     }
 
@@ -170,12 +171,12 @@ int main()
     const int size = vec.size();
     if (size == 0)
     {
-        cout << "-" << endl;
+        //cout << "-" << endl;
         return 0;
     }
     res_graph = new node[size];
 
     results(vec, vertices, size);
-    cout << endl;
+    //cout << endl;
     return 0;
 }
